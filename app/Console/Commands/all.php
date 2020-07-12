@@ -42,14 +42,14 @@ class all extends Command
         
         $this->createController();
 
-        system("php artisan make:request " . $this->argument('name') . "Request");
-        $this->info('Success Generate Request ... ');
-        system("php artisan make:migration create_table_". strtolower($this->argument('name')). " --create=". strtolower($this->argument('name')). "s");
-        $this->info('Success Generate Migration ... ');
-        system("php artisan make:seeder ". $this->argument('name'). "Seeder");
-        $this->info('Success Generate Seeder ... ');
-        system("php artisan make:factory ". $this->argument('name'). "Factory --model=Models/". $this->argument('name'). "Model");
-        $this->info('Success Generate Factory ... ');
+        // system("php artisan make:request " . $this->argument('name') . "Request");
+        // $this->info('Success Generate Request ... ');
+        // system("php artisan make:migration create_table_". strtolower($this->argument('name')). " --create=". strtolower($this->argument('name')). "s");
+        // $this->info('Success Generate Migration ... ');
+        // system("php artisan make:seeder ". $this->argument('name'). "Seeder");
+        // $this->info('Success Generate Seeder ... ');
+        // system("php artisan make:factory ". $this->argument('name'). "Factory --model=Models/". $this->argument('name'). "Model");
+        // $this->info('Success Generate Factory ... ');
     }
 
     public function createController(){
@@ -85,8 +85,10 @@ class all extends Command
             $this->info('Success Generate User Controller ... ');
         }
         if ($user_api){
+            system("php artisan make:resource ". $this->argument('name'). "Resource");
+            $this->info('Success Generate Resource ... ');
             system("php artisan make:controller Api/". $this->argument('name'). "Controller --api --model=". $modelNamespace);
-            $this->info('Success Generate Api User Controller ... ');
+            $this->info('Success Generate Api Controller ... ');
         }
     }
 }
