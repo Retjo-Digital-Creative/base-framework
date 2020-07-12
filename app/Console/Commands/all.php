@@ -18,7 +18,7 @@ class all extends Command
      *
      * @var string
      */
-    protected $description = 'Create a new model, controller, repository, migration in 1 time';
+    protected $description = 'Create a new model, controller, migration in 1 time';
 
     /**
      * Create a new command instance.
