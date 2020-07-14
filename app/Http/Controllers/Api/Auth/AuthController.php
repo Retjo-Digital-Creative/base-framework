@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Helpers;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
-/**
- * @todo Setting route apabila user sudah login atau belum
- */
 class AuthController extends Controller
 {
     /**
@@ -30,7 +27,12 @@ class AuthController extends Controller
         ]);
 
         if($validation->fails()) {
-            return Helpers::response($validation->errors(), 422);
+            return Helpers::response([
+                'code' => 422,
+                'success' => false,
+                'message' => 'Form validation failed!',
+                'content' => $validation->errors()
+            ], 422);
         }
 
         $data = $request->all();
@@ -61,27 +63,35 @@ class AuthController extends Controller
         ]);
 
         if($validation->fails()) {
-            return Helpers::response($validation->errors(), 422);
+            return Helpers::response([
+                'code' => 422,
+                'success' => false,
+                'message' => 'Form validation failed!',
+                'content' => $validation->errors()
+            ], 422);
         }
 
         $credentials = request(['email', 'password']);
 
         if(!Auth::attempt($credentials)) {
             return Helpers::response([
-                'message' => 'Unauthorized'
+                'code' => 401,
+                'success' => false,
+                'message' => 'Authentication failed'
             ], 401);
         }
 
-        $user = $request->user();
-        $createToken = $user->createToken('User token');
-        $token = $createToken->token;
-
-        if($request->remember_me) $token->expires_at = Carbon::now()->addWeeks(1);
-        $token->save();
+        $user = User::where('email', $request->email)->first();
+        $createToken = $user->createToken('User token')->accessToken;
 
         return Helpers::response([
+            'code' => 200,
+            'success' => true,
             'message' => 'Success login',
-            'token' => $createToken->accessToken
+            'content' => [
+                'userData' => $user,
+                'token' => $createToken
+            ]
         ], 200);
     }
 
@@ -93,27 +103,15 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        Auth::guard('api')
+            ->user()
+            ->token()
+            ->revoke();
 
         return Helpers::response([
             'code' => 200,
             'success' => true,
             'message' => 'Successfully logout'
-        ], 200);
-    }
-
-    /**
-     * Get user data
-     *
-     * @todo Masih belum setting routes apabila belum login
-     * @param \Illuminate\Http\Request $request
-     * @return \App\Helpers
-     */
-    public function user(Request $request)
-    {
-        return Helpers::response([
-            'message' => 'Success get user data',
-            'userData' => $request->user()
         ], 200);
     }
 }
