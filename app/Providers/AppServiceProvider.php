@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Setting;
+use App\Models\Settings;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         if(Schema::hasTable('settings')){
             config([
-                'global' => Setting::all([
+                'global' => Settings::all([
                     'name','value'
                 ])
                 ->keyBy('name')
