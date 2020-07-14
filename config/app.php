@@ -227,7 +227,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'fmt' => App\Helpers\FormatHelper::class,
+        'Fmt' => App\Helpers\FormatHelper::class,
     ],
 
 ];
