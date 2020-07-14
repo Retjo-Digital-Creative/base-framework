@@ -37,5 +37,5 @@ class AppServiceProvider extends ServiceProvider
                 ->toArray()
             ]);
         }
-    }
-}
+
+        Schema::defaultStringLength(191);

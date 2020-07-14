@@ -14,6 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/', function () {
+    return \App\Helpers\Helpers::response([
+        'code' => 200,
+        'success' => true,
+        'message' => 'Hello World'
+    ], 200);
 });
+
+Route::name('api.auth.')
+    ->prefix('auth')
+    ->group(function () {
+        Route::post('/login', 'Api\Auth\AuthController@login')->name('login');
+        Route::post('/register', 'Api\Auth\AuthController@register')->name('register');
+    });
+
+Route::name('api.backend.')
+    ->prefix('backend')
+    ->middleware('api-auth')
+    ->group(function () {
+        Route::get('/user', 'Api\MainController@user')->name('user');
+        Route::post('/logout', 'Api\Auth\AuthController@logout')->name('logout');
+    });
