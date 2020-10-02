@@ -16,10 +16,13 @@ use Illuminate\Support\Facades\DB;
 |
  */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/', function () {
+    return \App\Helpers\Helpers::response([
+        'code' => 200,
+        'success' => true,
+        'message' => 'Hello World'
+    ], 200);
 });
-
 
 Route::get('/', function () {
     return view('welcome');
