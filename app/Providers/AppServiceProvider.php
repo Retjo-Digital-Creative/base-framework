@@ -25,6 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // migration error jika default string length tidak ada
+        Schema::defaultStringLength(191);
+
         if(Schema::hasTable('settings')){
             config([
                 'global' => Setting::all([
