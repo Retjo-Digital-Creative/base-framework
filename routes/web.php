@@ -49,3 +49,5 @@ if (Schema::hasTable('routes') && Schema::hasTable('route_groups')) {
         printf($e);
     }
 }
+
+Route::view('/admin', 'backend.dashboard');
