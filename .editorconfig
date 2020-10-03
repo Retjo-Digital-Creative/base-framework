@@ -18,4 +18,4 @@ indent_size = 2
 indent_size = 2
 
 [*.blade.php]
-indent_size = 2
+indent_size = 4
